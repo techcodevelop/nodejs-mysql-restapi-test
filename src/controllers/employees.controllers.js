@@ -4,9 +4,9 @@ import { pool } from "../db.js";
 
 export const getEmployees = async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT * FROM EMPLOYEE");
+    const [rows] = await pool.query("SELECT * FROM employee");
     res.json(rows);
-  } catch (e) {
+  } catch (error) {
     return res.status(500).json({
       message: "Something goes wrong",
     });
@@ -18,13 +18,13 @@ export const getEmployee = async (req, res) => {
     //  throw new Error("Error inesperado");
 
     const id = req.params.id;
-    const [rows] = await pool.query("SELECT * FROM EMPLOYEE WHERE ID=?", [id]);
+    const [rows] = await pool.query("SELECT * FROM employee WHERE ID=?", [id]);
     if (rows.length <= 0)
       return res.status(404).json({
         message: "Employee not found",
       });
     res.json(rows[0]);
-  } catch (e) {
+  } catch (error) {
     return res.status(500).json({
       message: "Something goes wrong",
     });
@@ -39,7 +39,7 @@ export const createEmployees = async (req, res) => {
       [name, salary]
     );
     res.send({ id: rows.insertId, name, salary });
-  } catch (e) {
+  } catch (error) {
     return res.status(500).json({
       message: "Something goes wrong",
     });
@@ -66,7 +66,7 @@ export const updateEmployees = async (req, res) => {
     console.log(id, name, salary);
 
     res.json(rows[0]);
-  } catch (e) {
+  } catch (error) {
     return res.status(500).json({
       message: "Something goes wrong",
     });
@@ -76,13 +76,13 @@ export const updateEmployees = async (req, res) => {
 export const deleteEmployees = async (req, res) => {
   const id = req.params.id;
   try {
-    const [result] = await pool.query("delete from EMPLOYEE WHERE ID=?", [id]);
+    const [result] = await pool.query("delete from employee WHERE ID=?", [id]);
     if (result.affectedRows.length <= 0)
       return res.status(404).json({
         message: "Employee not found",
       });
     res.sendStatus(204);
-  } catch (e) {
+  } catch (error) {
     return res.status(500).json({
       message: "Something goes wrong",
     });
